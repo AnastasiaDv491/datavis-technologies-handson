@@ -1,4 +1,5 @@
 <script>
+    import data from "d3-selection/src/selection/data";
     // Dimensions
     const [height, width] = [400, 600];
     const margin = { top: 50, right: 5, bottom: 55, left: 50 };

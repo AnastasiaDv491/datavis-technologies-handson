@@ -13,6 +13,7 @@
     const Log = scaleLog()
       .domain([1,100])
       .range([1,800])
+    console.log(Log(values[0]))
   </script>
   
   <svg viewBox="0 0 {width} {height}">
