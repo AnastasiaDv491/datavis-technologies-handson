@@ -1,20 +1,26 @@
 <script>
     import * as d3 from "d3";
     import { onMount } from 'svelte';
-    // import Scatterplot from "./Scatterplot.svelte";
+    import Scatterplot from "./Scatterplot.svelte";
 
  
-    let data = [];
+    let data;
     onMount(async () => {
         console.log("onMount started!");
-        data = await d3.csv("/data/cars-2.csv");
+        
+        data = await d3.json("/data/gapminder.json");
 
+        //Get max income
+        console.log(Math.max(...data[0].countries.map(o => o.income)));
+        //Get max life expectancy
+        console.log(Math.max(...data[0].countries.map(o => o.population)));
+        
+
+        console.log(data[0].countries)
         console.log("Data loaded!");
     });
 
     console.log("Script finished!")
 </script>
 
-{#each data as post}
-    <h3>{post.Name}</h3>
-{/each}
+<Scatterplot dataExcercise={data}></Scatterplot>
