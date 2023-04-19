@@ -17,14 +17,43 @@
   
     // All lights with a higher index are on!
     let index = points.length;
-  
+    let color;
+    // const incr = () => (index -= 1)
+    function decreaseInt(){
+      index -=1
+      if (index <= -1){
+        clearInterval(clear)
+        color = "darkgreen"
+      }
+    }
+    let clear
+    $: {
+      clear = setInterval(decreaseInt,1000)
+      color = "darkred";
+      console.log(clear)
+    }
+    
+    // index = -1;
+    // TODO: 
     // Color
-    let color = "darkred";
+
   </script>
   
   <svg viewBox="0 0 {width} {height}">
     <g transform="translate({margin.left},{margin.top})">
-      <!--  -->
+      {#each points as position, i}
+      {#if i >= index}
+      <circle r = 10 cx = {position} class = "circle_light"  fill= {color} opacity = 1/>
+      {:else}
+      <circle r = 10 cx = {position} class = "circle_light"  fill= {color} opacity = 0.3/>
+
+      {/if}
+      {/each}
     </g>
   </svg>
+
+  <p>{index}</p>
+  <style>
+    
+  </style>
   

@@ -1,9 +1,9 @@
-<script>
+<!-- <script>
   // Properties
   export let data = [];
   const continents = ["europe", "asia", "americas", "africa"];
-</script>
+</script> -->
 
-<div class="row">
+<!-- <div class="row"> -->
   <!--  -->
-</div>
+<!-- </div> -->

@@ -1,3 +1,4 @@
+
 <h1>Exercises</h1>
 <p>
   These are the actual exercises for visualisation in svelte. It's important to
