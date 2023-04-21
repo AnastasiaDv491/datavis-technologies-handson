@@ -3,6 +3,8 @@
   import { select } from "d3-selection";
   import { scaleLinear } from "d3-scale";
   import { axisBottom, axisLeft } from "d3-axis";
+  import { brushX} from 'd3';
+
 
   // Properties
   export let data = [];
@@ -10,6 +12,7 @@
   export let y = (d) => d.y;
   export let xLabel = "x";
   export let yLabel = "y";
+
 
   // Dimensions
   const width = 300;
@@ -30,6 +33,7 @@
   // The range of the selection rectangle.
   // If there is no active selection, it contains: null,
   // otherwise, it contains: [ [x0, y0], [x1, y1] ]
+
   let range = null;
 </script>
 

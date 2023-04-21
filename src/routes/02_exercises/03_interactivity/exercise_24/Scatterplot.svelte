@@ -7,9 +7,10 @@
   import { scaleLog, scaleLinear, scaleOrdinal } from "d3-scale";
 
   // Properties
+
   export let data = [];
   const continents = ["europe", "asia", "americas", "africa"];
-
+  console.log(data)
   // Dimensions
   const [height, width] = [400, 550];
   const margin = { top: 50, right: 5, bottom: 55, left: 50 };
@@ -33,7 +34,7 @@
 <svg viewBox="0 0 {width} {height}" style="max-width: {width}px">
   <g transform="translate({margin.left}, {margin.top})">
     <!-- Scatterplot -->
-    {#each data.filter((d) => d.income && d.life_exp) as element}
+    {#each data?.filter((d) => d.income && d.life_exp) as element}
       <circle
         class="dot"
         cx={xScale(+element.income)}
