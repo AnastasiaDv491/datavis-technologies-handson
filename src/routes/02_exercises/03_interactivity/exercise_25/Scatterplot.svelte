@@ -3,8 +3,8 @@
   import { select } from "d3-selection";
   import { scaleLinear } from "d3-scale";
   import { axisBottom, axisLeft } from "d3-axis";
-  import { brushX} from 'd3';
-
+  import { brush } from "d3-brush";
+    import { color } from "d3";
 
   // Properties
   export let data = [];
@@ -13,6 +13,10 @@
   export let xLabel = "x";
   export let yLabel = "y";
 
+  //Own properties
+  export let pointsSelectedInBoth;
+  export let pointsSelected = [];
+  let coords = [];
 
   // Dimensions
   const width = 300;
@@ -33,24 +37,116 @@
   // The range of the selection rectangle.
   // If there is no active selection, it contains: null,
   // otherwise, it contains: [ [x0, y0], [x1, y1] ]
-
   let range = null;
+
+  // brush()
+  // .on('start', doStart)
+  // .on('brush', doMove)
+  // .on('end', doEnd)
+  function brushActivation(node) {
+    // console.log(node);
+    select(node).call(
+      brush().on("start", doStart).on("brush", doMove).on("end", doEnd)
+    );
+  }
+  function doStart({ selection }) {
+    // console.log({ selection });
+    range = selection;
+  }
+
+  function doMove({ selection }) {
+    // console.log({ selection });
+    range = selection;
+  }
+
+  function doEnd({ selection }) {
+    // console.log({ selection });
+    range = selection;
+  }
+
+  data.forEach((element) => {
+    let xpoint = xScale(x(element));
+    let ypoint = yScale(y(element));
+    coords.push({xpoint, ypoint});
+  });
+
+  function handleRangeChange(){
+    console.log("changed range");
+    if (range) {
+      for (let index = 0; index < coords.length; index++) {
+        const element = coords[index];
+        // console.log(element)
+        if(range[0][0] <= element.xpoint && element.xpoint <= range[1][0] &&  range[0][1] <= element.ypoint &&element.ypoint <= range[1][1]){
+          pointsSelected[index] = true
+        }
+        else {
+          pointsSelected[index] = false
+        }
+      }
+    }
+    else{
+      // Range is null
+      console.log("range is null");
+      pointsSelected = [];
+      for (let i = 0; i < coords.length; i++) {
+        pointsSelected[i] = true;
+      }
+    }
+  }
+
+  $: range, handleRangeChange();
+
+
+  // function changeCSSAttributes(){
+  //   for (let index = 0; index < pointsSelectedInBoth.length; index++) {
+  //     if (pointsSelectedInBoth[index] = false){
+  //       opacity = "0.3"
+  //       stroke_opacity = "0.5"
+  //       fill = "darkgray"
+  //     }
+  //     else{
+  //       opacity = "1"
+  //       stroke_opacity = "1"
+  //       fill = "steelblue"
+  //     }
+  //   }
+  // }
+  $: pointsSelected
+  
 </script>
 
 <svg viewBox="0 0 {width} {height}" class="mx-2" style="max-width: {width}px">
   <g transform="translate({margin.left},{margin.top})">
-    <g>
-      {#each data as d}
+    <g id="groupForBrush" use:brushActivation>
+      {console.log(pointsSelectedInBoth)}
+
+      {#each coords as d, i}
+        {#if pointsSelectedInBoth[i] == true}
+        <!-- svelte-ignore a11y-mouse-events-have-key-events -->
         <circle
-          cx={xScale(x(d))}
-          cy={yScale(y(d))}
+          cx={d.xpoint}
+          cy={d.ypoint}
           r={2}
           fill="steelblue"
           fill-opacity="0.5"
-          stroke="steelblue"
+          stroke='steelblue'
           stroke-width="1.5"
-          stroke-opacity="1"
+          stroke-opacity= "1"
+          opacity = "1"
         />
+        {:else}
+          <circle
+          cx={d.xpoint}
+          cy={d.ypoint}
+          r={2}
+          fill="darkgrey"
+          fill-opacity="0.3"
+          stroke='darkgrey'
+          stroke-width="1.5"
+          stroke-opacity= "0.5"
+          opacity = "1"
+        />
+        {/if}
       {/each}
     </g>
     <g use:xAxis transform="translate(0, {innerHeight})">
@@ -75,4 +171,5 @@
     vertical-align: bottom;
     fill: currentcolor;
   }
+
 </style>
