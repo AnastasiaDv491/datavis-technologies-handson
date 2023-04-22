@@ -4,10 +4,27 @@
 
   // Properties
   export let data = [];
-  const continents = ["europe", "asia", "americas", "africa"];
+  const continents = ["all","europe", "asia", "americas", "africa"];
   export let selected_continent;
   export let slider_value = 0;                                              
     
+  // const incr = () => (index -= 1)
+  function decreaseInt(){
+    slider_value +=1
+    if (slider_value >=2014){
+      clearInterval(clear)
+    }
+  }
+  let clear
+  function setInt(){
+    clear = setInterval(decreaseInt,500)
+  }
+
+  function resetInt(){
+    slider_value = 0;
+    clear = setInterval(decreaseInt,500)
+  }
+
 </script> 
 
 <div class="column">
@@ -15,8 +32,8 @@
   <p>Year: {data[slider_value].year}</p>
 
 
-  <button type="button" class="btn btn-primary">Reset</button>
-  <button type="button" class="btn btn-success">Play Pause</button>
+  <button type="button" class="btn btn-primary" on:click={resetInt}>Reset</button>
+  <button type="button" class="btn btn-success" on:click={setInt}>Play Pause</button>
   <select name="language" id="language" bind:value = {selected_continent} >
     {#each continents as continent}
     <option value={continent}>{continent}</option>

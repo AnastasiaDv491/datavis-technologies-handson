@@ -13,34 +13,23 @@
 
   onMount(async () => {
     data = await json("/data/gapminder.json");
-    // console.log(data)
-
-    console.log(continentSelected)
-    console.log(indexYearSelected)
-
-
     const data2 = data[indexYearSelected]?.countries.filter((entry )=> {
       return entry.continent == continentSelected
     })
-
-    // console.log(data2)
-    console.log(data[indexYearSelected]?.countries);
   });
-
- 
-  
 </script>
 
 {#if !data}
   <p>Loading the data, please wait...</p>
 {:else}
   <div>
+    {#if continentSelected == "all"}
+    <Scatterplot data={data[indexYearSelected]?.countries}/>
+    {:else}
     <Scatterplot data={data[indexYearSelected]?.countries.filter((entry )=> {
       return entry.continent == continentSelected
     })} />
+    {/if}
     <Controls {data} bind:slider_value={indexYearSelected} bind:selected_continent = {continentSelected} />
-    <!-- {data2} -->
-    {continentSelected}
-    <!-- {console.log(data[indexYearSelected]?.countries} -->
   </div>
 {/if}
